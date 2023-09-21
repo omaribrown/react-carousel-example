@@ -1,7 +1,7 @@
 .App {
   text-align: center;
   background-color: blue;
-
+  color: white;
 }
 
 .App-logo {
@@ -39,10 +39,7 @@
   }
 }
 
-/* body {
-  background-color: blue;
 
-} */
 
 .first-slide {
   /* height: 200px;

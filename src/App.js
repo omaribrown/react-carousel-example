@@ -4,71 +4,62 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Carousel from 'react-bootstrap/Carousel';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { useState } from 'react';
 
 
 
 function App() {
+  const [buttonColors, setButtonColors] = useState(['white', 'white', 'white']);
+  const [selectedValues, setSelectedValues] = useState([]);
 
-  const forwardSlide = () => {
-    document.querySelector('.carousel-control-next-icon').click();
-  }
+  const handleClick = (index, value) => {
+    const newColors = [...buttonColors];
+    newColors[index] = newColors[index] === 'green' ? 'white' : 'green';
+    setButtonColors(newColors);
 
-  const backwardSlide = () => {
-    document.querySelector('.carousel-control-prev-icon').click();
-  }
+    const newSelectedValues = [...selectedValues];
+    if (newColors[index] === 'green') {
+      newSelectedValues.push(value);
+    } else {
+      const removeIndex = newSelectedValues.indexOf(value);
+      if (removeIndex > -1) {
+        newSelectedValues.splice(removeIndex, 1);
+      }
+    }
+    setSelectedValues(newSelectedValues);
+  };
 
-  const [firstSlideDisabled, setFirstSlideDisabled] = React.useState(false);
-  const [field1, setField1] = React.useState("");
-  const [field2, setField2] = React.useState("");
-
-
-  React.useEffect(() => {
-    setFirstSlideDisabled(!field1 || !field2);
-  }, [field1, field2]);
-
+  const handleSubmit = () => {
+    console.log(selectedValues);
+  };
 
   return (
-    <body>
-      <div className='App' style={{ display: 'block', width: 700, padding: 30 }}>
-        <Form>
-
-          <Carousel>
-            <Carousel.Item >
-              <div className='first-slide'>
-                <h4>React-Bootstrap Carousel Component</h4>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>input field 1</Form.Label>
-                  <Form.Control type="text" placeholder="type something" value={field1} onChange={(e) => setField1(e.target.value)} />
-                  <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
-                  </Form.Text>
-                  <Form.Label>input field 2</Form.Label>
-                  <Form.Control type="text" placeholder="type something" value={field2} onChange={(e) => setField2(e.target.value)} />
-                  <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
-                  </Form.Text>
-                  <Button variant="primary" disabled={firstSlideDisabled} onClick={() => {
-                    forwardSlide();
-                  }}>
-                    Next
-                  </Button>
-                </Form.Group>
-              </div>
-            </Carousel.Item>
-            <Carousel.Item >
-              <img
-                className="d-block w-100"
-                src="https://media.geeksforgeeks.org/wp-content/uploads/20210425122716/1-300x115.png"
-                alt="Image Two"
-              />
-              <Carousel.Caption>
-                <h2>form set 2</h2>
-              </Carousel.Caption>
-            </Carousel.Item>
-          </Carousel>
-        </Form>
-      </div>
-    </body>
+    <form>
+      <button
+        type="button"
+        style={{ backgroundColor: buttonColors[0] }}
+        onClick={() => handleClick(0, 'Button1')}
+      >
+        Button 1
+      </button>
+      <button
+        type="button"
+        style={{ backgroundColor: buttonColors[1] }}
+        onClick={() => handleClick(1, 'Button2')}
+      >
+        Button 2
+      </button>
+      <button
+        type="button"
+        style={{ backgroundColor: buttonColors[2] }}
+        onClick={() => handleClick(2, 'Button3')}
+      >
+        Button 3
+      </button>
+      <button type="button" onClick={handleSubmit}>
+        Submit
+      </button>
+    </form>
   );
 }
 
